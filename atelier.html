@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="L'atelier d'impression 3D : choisis un objet et une couleur de filament, puis regarde-le s'imprimer couche par couche.">
+    <title>L'atelier — Impression 3D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=Sora:wght@600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<!-- ===== Barre de navigation ===== -->
+<header class="navbar">
+    <div class="container navbar-inner">
+        <a class="logo" href="index.html" aria-label="Retour à l'accueil">
+            <svg class="logo-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                <path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>
+            </svg>
+            <span class="logo-text">Impression<span class="logo-accent">3D</span></span>
+        </a>
+        <nav class="nav-links" id="menu-principal" aria-label="Navigation principale">
+            <a href="index.html#definition">Définition</a>
+            <a href="index.html#fonctionnement">Fonctionnement</a>
+            <a href="index.html#simulateur">Simulateur</a>
+            <a href="index.html#materiaux">Matériaux</a>
+            <a href="index.html#applications">Applications</a>
+            <a href="index.html#video">Vidéo</a>
+        </nav>
+        <a class="btn btn-nav" href="index.html">Retour au guide</a>
+        <button class="menu-burger" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Ouvrir le menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+    </div>
+</header>
+
+<!-- ===== En-tête de page (vidéo en boucle) ===== -->
+<div class="entete-page">
+    <video class="entete-video" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">
+        <source src="videos/impression-3d-timelapse.webm" type="video/webm">
+    </video>
+    <div class="entete-overlay" aria-hidden="true"></div>
+    <div class="container narrow entete-contenu">
+        <p class="eyebrow eyebrow-light centre">Atelier — bac à sable</p>
+        <h1>L'atelier d'impression</h1>
+        <p class="lead centre">
+            Choisis un objet et une couleur, puis regarde-le s'imprimer couche par couche.
+            Aucune bonne réponse — juste le plaisir de fabriquer&nbsp;!
+        </p>
+    </div>
+</div>
+
+<main>
+    <section class="section">
+        <div class="container narrow">
+
+            <div class="simulateur-carte">
+                <!-- Sélecteurs : objet + couleur -->
+                <div class="atelier-pickers">
+                    <div class="picker-groupe">
+                        <span class="picker-label" id="label-objet">Objet</span>
+                        <div class="chips" role="group" aria-labelledby="label-objet">
+                            <button type="button" class="chip-objet actif" data-objet="0" aria-pressed="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8"/><path d="M9 3c0 3-3 4-3 9a6 6 0 0 0 12 0c0-5-3-6-3-9"/></svg>
+                                Vase
+                            </button>
+                            <button type="button" class="chip-objet" data-objet="1" aria-pressed="false">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22V8l6-4 6 4v14"/><path d="M4 22h16"/><path d="M10 12h4M10 16h4"/></svg>
+                                Tour
+                            </button>
+                            <button type="button" class="chip-objet" data-objet="2" aria-pressed="false">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0Z"/><path d="M9.5 12c0 4 0 9 .5 9h4c.5 0 .5-5 .5-9"/></svg>
+                                Champignon
+                            </button>
+                            <button type="button" class="chip-objet" data-objet="3" aria-pressed="false">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v3"/><path d="M5 7l7-2 7 2-7 15z"/></svg>
+                                Toupie
+                            </button>
+                        </div>
+                    </div>
+                    <div class="picker-groupe">
+                        <span class="picker-label" id="label-couleur">Couleur</span>
+                        <div class="chips" role="group" aria-labelledby="label-couleur">
+                            <button type="button" class="chip-couleur actif" data-hex="#ea580c" style="background-color:#ea580c" aria-label="Orange" aria-pressed="true"></button>
+                            <button type="button" class="chip-couleur" data-hex="#0d9488" style="background-color:#0d9488" aria-label="Turquoise" aria-pressed="false"></button>
+                            <button type="button" class="chip-couleur" data-hex="#2563eb" style="background-color:#2563eb" aria-label="Bleu" aria-pressed="false"></button>
+                            <button type="button" class="chip-couleur" data-hex="#dc2626" style="background-color:#dc2626" aria-label="Rouge" aria-pressed="false"></button>
+                            <button type="button" class="chip-couleur" data-hex="#7c3aed" style="background-color:#7c3aed" aria-label="Violet" aria-pressed="false"></button>
+                            <button type="button" class="chip-couleur" data-hex="#e7ddc9" style="background-color:#e7ddc9" aria-label="Ivoire" aria-pressed="false"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <canvas id="canvas-impression" width="720" height="400"
+                        role="img" aria-label="Atelier : l'objet choisi est imprimé couche par couche dans la couleur choisie"></canvas>
+
+                <div class="simulateur-controles">
+                    <button id="btn-lecture" class="btn btn-primary" type="button">
+                        <svg id="icone-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 14 9-14 9V3z"/></svg>
+                        <svg id="icone-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+                        <span id="btn-lecture-texte">Imprimer</span>
+                    </button>
+                    <input type="range" id="curseur-couches" min="0" max="48" value="0" step="1"
+                           aria-label="Nombre de couches imprimées">
+                    <p class="compteur-couches" aria-live="polite"><span id="affichage-couches">Couche 0 / 48</span></p>
+                </div>
+
+                <div class="atelier-actions">
+                    <button id="btn-nouvel-objet" class="btn btn-secondaire" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+                        Un autre objet
+                    </button>
+                </div>
+
+                <p class="atelier-fait" aria-live="polite"></p>
+
+                <noscript><p class="noscript-avert">Active JavaScript pour utiliser l'atelier interactif.</p></noscript>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<!-- ===== Pied de page ===== -->
+<footer class="footer">
+    <div class="container footer-grid">
+        <div>
+            <p class="footer-logo">Impression<span class="logo-accent">3D</span></p>
+            <p class="footer-blurb">
+                Un site pédagogique pour comprendre, simplement et en images,
+                comment fonctionne une imprimante 3D.
+            </p>
+        </div>
+        <nav aria-label="Plan du site">
+            <p class="footer-titre">Plan du site</p>
+            <ul>
+                <li><a href="index.html#definition">Définition</a></li>
+                <li><a href="index.html#fonctionnement">Fonctionnement</a></li>
+                <li><a href="index.html#simulateur">Simulateur</a></li>
+                <li><a href="index.html#materiaux">Matériaux</a></li>
+                <li><a href="index.html#applications">Applications</a></li>
+                <li><a href="index.html#video">Vidéo</a></li>
+            </ul>
+        </nav>
+        <div>
+            <p class="footer-titre">À propos</p>
+            <p class="footer-blurb">
+                Site réalisé dans le cadre d'un projet scolaire — juin 2026.<br>
+                Images et vidéos créditées dans la section <a href="index.html#sources">Sources</a>.
+            </p>
+        </div>
+    </div>
+    <div class="container footer-bas">
+        <p>Projet scolaire — Technologie</p>
+        <a href="index.html">Retour au guide</a>
+    </div>
+</footer>
+
+<button id="retour-haut" type="button" aria-label="Retour en haut de la page" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+</body>
+</html>

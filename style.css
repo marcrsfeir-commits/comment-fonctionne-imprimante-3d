@@ -1,0 +1,1120 @@
+/* =====================================================
+   Impression 3D — feuille de style
+   Système de design :
+   - Polices : Sora (titres), Inter (texte), IBM Plex Mono (données)
+   - Couleurs sémantiques : encre ardoise + orange filament + sarcelle
+   - Espacement : gamme de 8 px — Rayons : 8 / 12 / 16 px
+   ===================================================== */
+
+:root {
+    /* Couleurs */
+    --encre: #0f172a;
+    --encre-2: #1e293b;
+    --encre-douce: #475569;
+    --encre-legere: #64748b;
+    --surface: #ffffff;
+    --fond: #f8fafc;
+    --bordure: #e2e8f0;
+    --primaire: #ea580c;          /* orange filament — décor */
+    --primaire-fort: #c2410c;     /* orange foncé — texte & boutons (AA) */
+    --primaire-pale: #fff7ed;
+    --sarcelle: #0d9488;
+    --sarcelle-fonce: #0f766e;
+    --sarcelle-pale: #f0fdfa;
+    --sur-sombre: #e2e8f0;
+    --sur-sombre-vif: #fb923c;
+
+    /* Typographie */
+    --police-titres: "Sora", "Segoe UI", system-ui, sans-serif;
+    --police-texte: "Inter", "Segoe UI", system-ui, sans-serif;
+    --police-mono: "IBM Plex Mono", "Consolas", monospace;
+
+    /* Effets */
+    --ombre-1: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --ombre-2: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 4px 10px -6px rgba(15, 23, 42, 0.08);
+    --ombre-3: 0 25px 50px -12px rgba(15, 23, 42, 0.28);
+    --rayon: 12px;
+    --rayon-g: 16px;
+    --transition: 200ms ease-out;
+}
+
+* { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+    /* La brume reste affichée, figée dans un état centré agréable */
+    body::before { background-position: 50% 50%; }
+}
+
+body {
+    margin: 0;
+    font-family: var(--police-texte);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--encre);
+    background-color: var(--fond);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Brume d'atelier — ambiance derrière tout le site (CSS seul) =====
+   Un dégradé très léger aux couleurs de la marque dérive lentement.
+   Il transparaît à travers les sections translucides : les zones claires
+   « respirent » sans vidéo de fond et sans nuire à la lecture. */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: linear-gradient(-45deg,
+        rgba(234, 88, 12, 0.07),
+        rgba(13, 148, 136, 0.06),
+        rgba(15, 23, 42, 0.04),
+        rgba(234, 88, 12, 0.06));
+    background-size: 400% 400%;
+    animation: derive 20s ease-in-out infinite;
+}
+
+@keyframes derive {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+::selection {
+    background: var(--primaire);
+    color: #ffffff;
+}
+
+:focus-visible {
+    outline: 3px solid var(--primaire);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.container.narrow { max-width: 800px; }
+
+/* Les ancres s'arrêtent sous la barre de navigation collante */
+section[id] { scroll-margin-top: 88px; }
+
+/* =====================================================
+   Typographie
+   ===================================================== */
+
+h1, h2, h3 {
+    font-family: var(--police-titres);
+    line-height: 1.2;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+    color: var(--encre);
+}
+
+h1 { font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 800; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; }
+h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+
+p { margin: 0 0 16px; }
+
+.centre { text-align: center; }            /* mise en forme : centré */
+
+.eyebrow {
+    font-family: var(--police-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--primaire-fort);            /* couleur de police n°2 */
+    margin-bottom: 12px;
+}
+
+.eyebrow-light { color: var(--sur-sombre-vif); }
+
+.lead {
+    font-size: 1.15rem;
+    color: var(--sur-sombre);
+    max-width: 34em;
+}
+
+.section-intro {
+    color: var(--encre-douce);              /* couleur de police n°3 */
+    max-width: 44em;
+    margin: 0 auto 40px;
+}
+
+.texte-accent { color: var(--primaire-fort); }
+
+.donnee {
+    font-family: var(--police-mono);
+    font-weight: 600;
+    font-size: 0.92em;
+    color: var(--primaire-fort);
+    background: var(--primaire-pale);
+    padding: 1px 6px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+/* =====================================================
+   Barre de navigation
+   ===================================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.12);
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 64px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.logo-mark {
+    width: 26px;
+    height: 26px;
+    color: var(--sur-sombre-vif);
+    flex-shrink: 0;
+}
+
+.logo-text {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+.logo-accent { color: var(--sur-sombre-vif); }
+
+.nav-links {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.nav-links a {
+    color: var(--sur-sombre);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: color var(--transition), background-color var(--transition);
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Lien de la section en cours de lecture (scrollspy) */
+.nav-links a.actif {
+    color: #ffffff;
+    background: rgba(251, 146, 60, 0.16);
+}
+
+/* Bouton du menu mobile */
+.menu-burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.menu-burger svg { width: 22px; height: 22px; }
+
+/* =====================================================
+   Boutons
+   ===================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--police-texte);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
+    padding: 13px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+    background: var(--primaire-fort);
+    color: #ffffff;
+    box-shadow: var(--ombre-1);
+}
+
+.btn-primary:hover {
+    background: #9a3412;
+    box-shadow: var(--ombre-2);
+    transform: translateY(-1px);
+}
+
+.btn-ghost {
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+
+.btn-nav {
+    background: var(--primaire-fort);
+    color: #ffffff;
+    font-size: 0.88rem;
+    padding: 9px 16px;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+/* Sur grand écran, le menu pousse déjà le bouton à droite */
+@media (min-width: 761px) {
+    .btn-nav { margin-left: 0; }
+}
+
+.btn-nav:hover { background: #9a3412; }
+
+/* =====================================================
+   Section héros
+   ===================================================== */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);  /* secours si la vidéo ne charge pas */
+    color: #ffffff;
+    padding: 88px 0 96px;
+}
+
+/* Vidéo en boucle, propre au héros (décorative) */
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Voile sombre : garantit la lisibilité du texte sur la vidéo */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(900px 420px at 85% -10%, rgba(234, 88, 12, 0.22), transparent 60%),
+        radial-gradient(700px 380px at -10% 110%, rgba(13, 148, 136, 0.18), transparent 60%),
+        linear-gradient(160deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.85) 55%, rgba(30, 41, 59, 0.90) 100%);
+}
+
+.hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+}
+
+.hero h1 { color: #ffffff; margin-bottom: 20px; }
+
+.text-gradient {
+    background: linear-gradient(90deg, #fb923c, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 28px 0 40px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 40px;
+    margin: 0;
+    padding: 24px 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.stat-value {
+    font-family: var(--police-mono);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--sur-sombre-vif);            /* couleur de police n°4 */
+}
+
+.stat-label {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.hero-media { position: relative; }
+
+.media-frame {
+    margin: 0;
+    background: var(--surface);
+    border-radius: var(--rayon-g);
+    padding: 10px;
+    box-shadow: var(--ombre-3);
+}
+
+.media-frame img {
+    border-radius: calc(var(--rayon-g) - 6px);
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+#materiaux .media-frame { box-shadow: var(--ombre-2); }
+#materiaux .media-frame img { aspect-ratio: 16 / 10; }
+
+.media-frame figcaption {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--encre-legere);
+    padding: 8px 6px 2px;
+}
+
+.floating-badge {
+    position: absolute;
+    top: -18px;
+    left: -14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    color: var(--encre);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    border-radius: 999px;
+    box-shadow: var(--ombre-2);
+}
+
+.floating-badge svg { width: 18px; height: 18px; color: var(--primaire-fort); }
+
+/* =====================================================
+   Sections
+   ===================================================== */
+
+/* Sections translucides : la brume colorée transparaît subtilement.
+   Une fine texture de « lignes de couche » rappelle l'impression 3D. */
+.section {
+    position: relative;
+    overflow: hidden;
+    padding: 88px 0;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.section-alt { background: rgba(248, 250, 252, 0.86); }
+
+.section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0 23px,
+        rgba(15, 23, 42, 0.035) 23px 24px);
+}
+
+.section > .container { position: relative; z-index: 1; }
+
+/* =====================================================
+   Cartes
+   ===================================================== */
+
+.cards-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 24px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-g);
+    padding: 28px;
+    box-shadow: var(--ombre-1);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ombre-2);
+}
+
+.card p:last-child { margin-bottom: 0; color: var(--encre-douce); font-size: 0.95rem; }
+
+.card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--primaire-pale);
+    color: var(--primaire-fort);
+    margin-bottom: 18px;
+}
+
+.card-icon svg { width: 24px; height: 24px; }
+
+.card-icon-teal {
+    background: var(--sarcelle-pale);
+    color: var(--sarcelle-fonce);
+}
+
+.card-step {
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--encre-legere);
+    margin-bottom: 4px;
+}
+
+.card-compacte { padding: 24px; }
+
+/* =====================================================
+   Encadré, schéma, citation
+   ===================================================== */
+
+.callout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--primaire-pale);
+    border: 1px solid #fed7aa;
+    border-radius: var(--rayon);
+    padding: 18px 22px;
+    margin-top: 32px;
+}
+
+.callout-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--primaire-fort);
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.callout p { margin: 0; }
+
+.diagramme {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-g);
+    padding: 28px;
+    box-shadow: var(--ombre-1);
+    text-align: center;
+}
+
+.diagramme svg { max-width: 760px; width: 100%; height: auto; }
+
+.diagramme figcaption {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--encre-legere);
+    margin-top: 10px;
+}
+
+.citation {
+    text-align: right;                       /* mise en forme : aligné à droite */
+    font-family: var(--police-titres);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--encre-2);
+    border-right: 4px solid var(--primaire);
+    padding: 8px 24px 8px 0;
+    margin: 56px 0 0 auto;
+    max-width: 36em;
+}
+
+.citation cite {
+    display: block;
+    font-family: var(--police-texte);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--encre-legere);
+    margin-top: 10px;
+}
+
+/* =====================================================
+   Disposition à deux colonnes
+   ===================================================== */
+
+.deux-colonnes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin: 40px 0 48px;
+}
+
+/* =====================================================
+   Tableau
+   ===================================================== */
+
+.table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-g);
+    box-shadow: var(--ombre-1);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+caption {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--police-titres);
+    font-weight: 700;
+    color: var(--encre);
+    padding: 20px 24px 12px;
+}
+
+th, td {
+    padding: 14px 24px;
+    text-align: left;
+    border-top: 1px solid var(--bordure);
+    vertical-align: top;
+}
+
+thead th {
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--encre-legere);
+    background: var(--fond);
+}
+
+tbody th {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    color: var(--primaire-fort);
+    white-space: nowrap;
+}
+
+tbody td { color: var(--encre-douce); }
+
+tbody tr { transition: background-color var(--transition); }
+tbody tr:hover { background: var(--fond); }
+
+.badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.badge-vert  { background: #dcfce7; color: #166534; }   /* couleur n°5 */
+.badge-ambre { background: #fef3c7; color: #92400e; }   /* couleur n°6 */
+.badge-rouge { background: #fee2e2; color: #991b1b; }   /* couleur n°7 */
+
+/* =====================================================
+   Vidéo
+   ===================================================== */
+
+.cadre-video {
+    aspect-ratio: 16 / 9;
+    background: var(--encre);
+    border-radius: var(--rayon-g);
+    overflow: hidden;
+    box-shadow: var(--ombre-2);
+}
+
+.cadre-video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+/* =====================================================
+   Bande d'appel à l'action (vidéo en boucle)
+   ===================================================== */
+
+.bande-cta {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 80px 0;
+}
+
+.bande-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bande-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(15, 23, 42, 0.86) 0%, rgba(15, 23, 42, 0.76) 100%);
+}
+
+.bande-contenu { position: relative; z-index: 1; }
+
+.bande-contenu h2 { color: #ffffff; }
+
+.bande-contenu p {
+    color: var(--sur-sombre);
+    margin-bottom: 28px;
+}
+
+/* =====================================================
+   Simulateur d'impression
+   ===================================================== */
+
+.simulateur-carte {
+    background: var(--surface);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon-g);
+    padding: 24px;
+    box-shadow: var(--ombre-1);
+}
+
+#canvas-impression {
+    width: 100%;
+    height: auto;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon);
+}
+
+.simulateur-controles {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+#curseur-couches {
+    flex: 1;
+    accent-color: var(--primaire-fort);
+    cursor: pointer;
+    min-height: 24px;
+}
+
+.compteur-couches {
+    font-family: var(--police-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--sarcelle-fonce);
+    white-space: nowrap;
+    margin: 0;
+    min-width: 130px;
+    text-align: right;
+}
+
+/* =====================================================
+   Animations d'apparition au défilement
+   ===================================================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 500ms ease-out, transform 500ms ease-out;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* =====================================================
+   Bouton « retour en haut »
+   ===================================================== */
+
+#retour-haut {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 90;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--encre);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    box-shadow: var(--ombre-2);
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+}
+
+#retour-haut[hidden] { display: none; }
+
+#retour-haut:hover {
+    background: var(--primaire-fort);
+    transform: translateY(-2px);
+}
+
+#retour-haut svg { width: 22px; height: 22px; }
+
+/* =====================================================
+   Sources
+   ===================================================== */
+
+.liste-sources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.liste-sources li {
+    background: var(--surface);
+    border: 1px solid var(--bordure);
+    border-radius: var(--rayon);
+    padding: 16px 22px;
+    transition: box-shadow var(--transition);
+}
+
+.liste-sources li:hover { box-shadow: var(--ombre-1); }
+
+.liste-sources a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--primaire-fort);
+    text-decoration: none;
+}
+
+.liste-sources a:hover { text-decoration: underline; }
+
+.liste-sources a svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.liste-sources span {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--encre-legere);
+    margin-top: 2px;
+}
+
+/* =====================================================
+   Quiz (page quiz.html)
+   ===================================================== */
+
+.entete-page {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 72px 0;
+}
+
+.entete-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.entete-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(700px 320px at 80% -20%, rgba(234, 88, 12, 0.22), transparent 60%),
+        linear-gradient(160deg, rgba(15, 23, 42, 0.90) 0%, rgba(30, 41, 59, 0.86) 100%);
+}
+
+.entete-contenu { position: relative; z-index: 1; }
+
+.entete-page h1 { color: #ffffff; margin-bottom: 12px; }
+
+.entete-page .lead { margin: 0 auto; }
+
+/* --- Atelier d'impression (sélecteurs d'objet et de couleur) --- */
+
+.atelier-pickers {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.picker-groupe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.picker-label {
+    font-family: var(--police-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--encre-legere);
+    min-width: 70px;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Pastilles d'objet : glyphe + nom */
+.chip-objet {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--police-texte);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--encre);
+    background: var(--surface);
+    border: 2px solid var(--bordure);
+    border-radius: 999px;
+    padding: 8px 16px 8px 10px;
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.chip-objet svg { width: 20px; height: 20px; color: var(--encre-legere); }
+
+.chip-objet:hover { border-color: var(--primaire); transform: translateY(-1px); }
+
+.chip-objet.actif {
+    border-color: var(--primaire-fort);
+    box-shadow: 0 0 0 3px var(--primaire-pale);
+}
+
+.chip-objet.actif svg { color: var(--primaire-fort); }
+
+/* Pastilles de couleur : ronds de filament */
+.chip-couleur {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--bordure);
+    padding: 0;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.chip-couleur:hover { transform: scale(1.1); }
+
+.chip-couleur.actif {
+    box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--encre-2);
+    transform: scale(1.1);
+}
+
+/* Message ludique révélé en fin d'impression */
+.atelier-fait {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--sarcelle-pale);
+    color: #115e59;
+    border-radius: var(--rayon);
+    padding: 14px 18px;
+    margin: 18px 0 0;
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+}
+
+.atelier-fait.visible { opacity: 1; }
+
+.atelier-fait svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--sarcelle-fonce); }
+
+.atelier-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-secondaire {
+    background: var(--surface);
+    color: var(--encre);
+    border: 1px solid var(--bordure);
+}
+
+.btn-secondaire:hover { border-color: var(--encre-legere); background: var(--fond); }
+
+.noscript-avert {
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: var(--rayon);
+    padding: 14px 18px;
+    text-align: center;
+}
+
+/* =====================================================
+   Pied de page
+   ===================================================== */
+
+.footer {
+    background: rgba(15, 23, 42, 0.93);
+    color: var(--sur-sombre);
+    padding: 64px 0 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+}
+
+.footer-logo {
+    font-family: var(--police-titres);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.footer-titre {
+    font-family: var(--police-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #94a3b8;
+    margin-bottom: 14px;
+}
+
+.footer-blurb { font-size: 0.92rem; color: #94a3b8; }
+
+.footer ul { list-style: none; margin: 0; padding: 0; }
+.footer ul li { margin-bottom: 8px; }
+
+.footer a { color: var(--sur-sombre); text-decoration: none; transition: color var(--transition); }
+.footer a:hover { color: var(--sur-sombre-vif); }
+
+.footer-bas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(226, 232, 240, 0.12);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+/* =====================================================
+   Adaptation aux petits écrans
+   ===================================================== */
+
+@media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero { padding: 64px 0; }
+    .cards-3 { grid-template-columns: 1fr; }
+    .deux-colonnes { grid-template-columns: 1fr; gap: 28px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero-stats { flex-wrap: wrap; gap: 24px; }
+}
+
+@media (max-width: 760px) {
+    .container { padding: 0 16px; }
+    .navbar-inner { gap: 8px; }
+    .menu-burger { display: flex; flex-shrink: 0; }
+    .btn-nav { font-size: 0.8rem; padding: 8px 12px; }
+    .nav-links { display: none; }
+
+    /* Menu déroulant ouvert par le bouton hamburger */
+    .navbar.nav-ouvert .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 8px 24px 16px;
+        background: #0f172a;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.12);
+        box-shadow: var(--ombre-2);
+    }
+
+    .navbar.nav-ouvert .nav-links a { padding: 12px; }
+
+    .section { padding: 56px 0; }
+    .citation { text-align: right; font-size: 1.1rem; }
+    .floating-badge { top: auto; bottom: -16px; left: 12px; }
+
+    .simulateur-controles { flex-wrap: wrap; }
+    .compteur-couches { width: 100%; text-align: left; }
+
+    /* Brume figée sur mobile pour préserver la batterie */
+    body::before { animation: none; background-position: 50% 50%; }
+}
