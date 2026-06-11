@@ -15,7 +15,7 @@ const mouvementReduit = window.matchMedia("(prefers-reduced-motion: reduce)").ma
 
 /* Dans ce cas, on met aussi les vidéos décoratives en pause */
 if (mouvementReduit) {
-    document.querySelectorAll(".hero-video, .bande-video, .entete-video, .fond-video").forEach((v) => v.pause());
+    document.querySelectorAll(".hero-video, .bande-video, .entete-video").forEach((v) => v.pause());
 }
 
 /* =====================================================
