@@ -451,19 +451,68 @@ p { margin: 0 0 16px; }
 
 .section-alt { background: rgba(248, 250, 252, 0.86); }
 
+/* Ambiance des sections claires : halos de marque très doux superposés
+   aux fines « lignes de couche » qui rappellent l'impression 3D.
+   Les halos s'inversent sur les sections alternées pour créer du rythme. */
 .section::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent 0 23px,
-        rgba(15, 23, 42, 0.035) 23px 24px);
+    background:
+        radial-gradient(640px 340px at 88% -8%, rgba(234, 88, 12, 0.08), transparent 62%),
+        radial-gradient(560px 320px at -6% 108%, rgba(13, 148, 136, 0.07), transparent 62%),
+        repeating-linear-gradient(0deg, transparent 0 23px, rgba(15, 23, 42, 0.035) 23px 24px);
+}
+
+.section-alt::before {
+    background:
+        radial-gradient(640px 340px at 90% -8%, rgba(13, 148, 136, 0.08), transparent 62%),
+        radial-gradient(560px 320px at -6% 108%, rgba(234, 88, 12, 0.07), transparent 62%),
+        repeating-linear-gradient(0deg, transparent 0 23px, rgba(15, 23, 42, 0.03) 23px 24px);
 }
 
 .section > .container { position: relative; z-index: 1; }
+
+/* En-tête de section : « eyebrow » en pastille + accent dégradé sous le titre */
+.section .eyebrow.centre {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: var(--primaire-pale);
+    border: 1px solid #fed7aa;
+    color: var(--primaire-fort);
+}
+
+.section-alt .eyebrow.centre {
+    background: var(--sarcelle-pale);
+    border-color: #99f6e4;
+    color: var(--sarcelle-fonce);
+}
+
+.section h2.centre {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.section h2.centre::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--primaire), #fbbf24);
+}
+
+.section-alt h2.centre::after {
+    background: linear-gradient(90deg, var(--sarcelle), #2dd4bf);
+}
 
 /* =====================================================
    Cartes
@@ -483,17 +532,35 @@ p { margin: 0 0 16px; }
 }
 
 .card {
-    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
     border: 1px solid var(--bordure);
     border-radius: var(--rayon-g);
     padding: 28px;
     box-shadow: var(--ombre-1);
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+/* Liseré dégradé en haut de carte — rappel d'une couche déposée */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primaire), #fbbf24);
+}
+
+.card-compacte::before {
+    background: linear-gradient(90deg, var(--sarcelle), #2dd4bf);
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: var(--ombre-2);
+    border-color: #cbd5e1;
 }
 
 .card p:last-child { margin-bottom: 0; color: var(--encre-douce); font-size: 0.95rem; }
@@ -502,19 +569,24 @@ p { margin: 0 0 16px; }
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: var(--primaire-pale);
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primaire-pale), #ffedd5);
     color: var(--primaire-fort);
+    box-shadow: inset 0 0 0 1px rgba(234, 88, 12, 0.12);
     margin-bottom: 18px;
+    transition: transform var(--transition);
 }
 
-.card-icon svg { width: 24px; height: 24px; }
+.card:hover .card-icon { transform: scale(1.08) rotate(-3deg); }
+
+.card-icon svg { width: 26px; height: 26px; }
 
 .card-icon-teal {
-    background: var(--sarcelle-pale);
+    background: linear-gradient(135deg, var(--sarcelle-pale), #ccfbf1);
     color: var(--sarcelle-fonce);
+    box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.12);
 }
 
 .card-step {
@@ -523,7 +595,7 @@ p { margin: 0 0 16px; }
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--encre-legere);
+    color: var(--primaire-fort);
     margin-bottom: 4px;
 }
 
@@ -537,11 +609,13 @@ p { margin: 0 0 16px; }
     display: flex;
     gap: 16px;
     align-items: flex-start;
-    background: var(--primaire-pale);
+    background: linear-gradient(120deg, var(--primaire-pale) 0%, #ffffff 92%);
     border: 1px solid #fed7aa;
+    border-left: 4px solid var(--primaire);
     border-radius: var(--rayon);
     padding: 18px 22px;
     margin-top: 32px;
+    box-shadow: var(--ombre-1);
 }
 
 .callout-icon {
@@ -556,11 +630,11 @@ p { margin: 0 0 16px; }
 
 .diagramme {
     margin: 0;
-    background: var(--surface);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border: 1px solid var(--bordure);
     border-radius: var(--rayon-g);
     padding: 28px;
-    box-shadow: var(--ombre-1);
+    box-shadow: var(--ombre-2);
     text-align: center;
 }
 
@@ -574,6 +648,7 @@ p { margin: 0 0 16px; }
 }
 
 .citation {
+    position: relative;
     text-align: right;                       /* mise en forme : aligné à droite */
     font-family: var(--police-titres);
     font-size: 1.25rem;
@@ -584,6 +659,17 @@ p { margin: 0 0 16px; }
     padding: 8px 24px 8px 0;
     margin: 56px 0 0 auto;
     max-width: 36em;
+}
+
+.citation::before {
+    content: "\201C";
+    position: absolute;
+    top: -0.5em;
+    right: 14px;
+    font-size: 4.5rem;
+    line-height: 1;
+    color: rgba(234, 88, 12, 0.16);
+    pointer-events: none;
 }
 
 .citation cite {
@@ -616,7 +702,7 @@ p { margin: 0 0 16px; }
     background: var(--surface);
     border: 1px solid var(--bordure);
     border-radius: var(--rayon-g);
-    box-shadow: var(--ombre-1);
+    box-shadow: var(--ombre-2);
     overflow-x: auto;
 }
 
@@ -657,6 +743,7 @@ tbody th {
     font-weight: 700;
     color: var(--primaire-fort);
     white-space: nowrap;
+    box-shadow: inset 3px 0 0 var(--primaire);
 }
 
 tbody td { color: var(--encre-douce); }
@@ -737,11 +824,11 @@ tbody tr:hover { background: var(--fond); }
    ===================================================== */
 
 .simulateur-carte {
-    background: var(--surface);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border: 1px solid var(--bordure);
     border-radius: var(--rayon-g);
     padding: 24px;
-    box-shadow: var(--ombre-1);
+    box-shadow: var(--ombre-2);
 }
 
 #canvas-impression {
@@ -839,12 +926,17 @@ tbody tr:hover { background: var(--fond); }
 .liste-sources li {
     background: var(--surface);
     border: 1px solid var(--bordure);
+    border-left: 3px solid transparent;
     border-radius: var(--rayon);
     padding: 16px 22px;
-    transition: box-shadow var(--transition);
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
 }
 
-.liste-sources li:hover { box-shadow: var(--ombre-1); }
+.liste-sources li:hover {
+    box-shadow: var(--ombre-2);
+    border-left-color: var(--primaire);
+    transform: translateX(4px);
+}
 
 .liste-sources a {
     display: inline-flex;
