@@ -188,6 +188,7 @@ if (canvas) {
     let progression = 0;          /* nombre de couches déposées */
     let enLecture = false;
     let derniereImage = null;
+    let couleursCouches = [];     /* couleur figée de chaque couche au moment de son dépôt */
 
     let objetActif = 0;
     let couleurActive = null;     /* null = sarcelle par défaut (guide) */
@@ -241,15 +242,16 @@ if (canvas) {
         return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
     }
 
-    /* Couleur d'une couche déjà imprimée (plus claire vers le haut = profondeur) */
-    function couleurCouche(t) {
-        if (!couleurActive) {
+    /* Couleur d'une couche déjà imprimée (plus claire vers le haut = profondeur).
+       « coul » est la couleur figée de cette couche précise (null = sarcelle par défaut). */
+    function couleurCouche(t, coul) {
+        if (!coul) {
             return "hsl(174, " + Math.round(50 + t * 20) + "%, " + Math.round(32 + t * 16) + "%)";
         }
-        const bas = Math.max(18, couleurActive.l - 14);
-        const haut = Math.min(90, couleurActive.l + 8);
+        const bas = Math.max(18, coul.l - 14);
+        const haut = Math.min(90, coul.l + 8);
         const L = Math.round(bas + (haut - bas) * t);
-        return "hsl(" + couleurActive.h + ", " + couleurActive.s + "%, " + L + "%)";
+        return "hsl(" + coul.h + ", " + coul.s + "%, " + L + "%)";
     }
 
     /* Couleur de la couche « chaude » en cours de dépôt */
@@ -307,13 +309,14 @@ if (canvas) {
             ctx.fill();
         }
 
-        /* Couches déjà imprimées */
+        /* Couches déjà imprimées — chacune garde la couleur active au moment du dépôt */
         const completes = Math.min(Math.floor(progression), NB_COUCHES);
         for (let i = 0; i < completes; i++) {
+            if (couleursCouches[i] === undefined) couleursCouches[i] = couleurActive;
             const t = i / (NB_COUCHES - 1);
             const l = silhouette(t) * L * 0.62;
             const y = plateauY - (i + 1) * hCouche;
-            ctx.fillStyle = couleurCouche(t);
+            ctx.fillStyle = couleurCouche(t, couleursCouches[i]);
             arrondi((L - l) / 2, y, l, hCouche + 0.5, 2);
             ctx.fill();
         }
@@ -321,6 +324,7 @@ if (canvas) {
         /* Couche « chaude » en cours de dépôt + buse qui avance */
         const fraction = progression - completes;
         if (completes < NB_COUCHES && (fraction > 0 || enLecture)) {
+            couleursCouches[completes] = couleurActive;   /* fige la couleur de la couche en cours */
             const t = completes / (NB_COUCHES - 1);
             const l = silhouette(t) * L * 0.62;
             const y = plateauY - (completes + 1) * hCouche;
@@ -382,7 +386,7 @@ if (canvas) {
     }
 
     function demarrer() {
-        if (progression >= NB_COUCHES) progression = 0;
+        if (progression >= NB_COUCHES) { progression = 0; couleursCouches = []; }
         if (faitEl) faitEl.classList.remove("visible");
         if (mouvementReduit) {                 /* pas d'animation : résultat direct */
             progression = NB_COUCHES;
@@ -402,6 +406,7 @@ if (canvas) {
         enLecture = false;
         derniereImage = null;
         progression = 0;
+        couleursCouches = [];
         if (faitEl) faitEl.classList.remove("visible");
         majInterface();
         dessiner();
@@ -442,7 +447,7 @@ if (canvas) {
         chip.addEventListener("click", () => {
             couleurActive = chip.dataset.hex ? hexVersHsl(chip.dataset.hex) : null;
             chipsCouleur.forEach((c) => c.classList.toggle("actif", c === chip));
-            dessiner();                        /* recolore l'impression en cours */
+            dessiner();                        /* n'affecte que la couche en cours et les suivantes */
         });
     });
 
